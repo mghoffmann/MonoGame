@@ -1,6 +1,8 @@
 // MonoGame - Copyright (C) MonoGame Foundation, Inc
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
+
+#nullable enable
 ﻿
 using System;
 using System.IO;
@@ -134,7 +136,7 @@ namespace Microsoft.Xna.Framework.Audio
         /// <param name="channels">The number of channels in the sound data.</param>
         /// <remarks>This only supports uncompressed 16bit PCM wav data.</remarks>
         public SoundEffect(byte[] buffer, int sampleRate, AudioChannels channels)
-             : this(buffer, 0, buffer != null ? buffer.Length : 0, sampleRate, channels, 0, 0)
+             : this(buffer, 0, buffer?.Length ?? 0, sampleRate, channels, 0, 0)
         {
         }
 
@@ -386,7 +388,7 @@ namespace Microsoft.Xna.Framework.Audio
         /// <summary>
         /// Returns a sound effect instance from the pool or null if none are available.
         /// </summary>
-        internal SoundEffectInstance GetPooledInstance(bool forXAct)
+        internal SoundEffectInstance? GetPooledInstance(bool forXAct)
         {
             if (!SoundEffectInstancePool.SoundsAvailable)
                 return null;

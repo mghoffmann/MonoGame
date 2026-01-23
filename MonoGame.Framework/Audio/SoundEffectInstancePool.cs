@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#nullable enable
+
 using System.Collections.Generic;
 
 namespace Microsoft.Xna.Framework.Audio
@@ -79,7 +81,7 @@ namespace Microsoft.Xna.Framework.Audio
         {
             lock (_locker) {
 
-            SoundEffectInstance inst = null;
+            SoundEffectInstance? inst = null;
             var count = _pooledInstances.Count;
             if (count > 0)
             {
@@ -118,7 +120,7 @@ namespace Microsoft.Xna.Framework.Audio
         {
             lock (_locker) {
 
-            SoundEffectInstance inst = null;
+            SoundEffectInstance? inst = null;
 
             // Cleanup instances which have finished playing.                    
             for (var x = 0; x < _playingInstances.Count;)
@@ -157,7 +159,7 @@ namespace Microsoft.Xna.Framework.Audio
         {
             lock (_locker) {
 
-            SoundEffectInstance inst = null;
+            SoundEffectInstance? inst = null;
 
             for (var x = 0; x < _playingInstances.Count;)
             {

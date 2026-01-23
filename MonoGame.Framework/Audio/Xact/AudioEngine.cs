@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#nullable enable
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -25,7 +27,7 @@ namespace Microsoft.Xna.Framework.Audio
         private readonly Stopwatch _stopwatch;
         private TimeSpan _lastUpdateTime;
 
-        private readonly ReverbSettings _reverbSettings;
+        private readonly ReverbSettings? _reverbSettings;
         private readonly RpcCurve[] _reverbCurves;
 
         internal List<Cue> ActiveCues = new List<Cue>();
@@ -371,7 +373,7 @@ namespace Microsoft.Xna.Framework.Audio
         /// <summary>
         /// This event is triggered when the AudioEngine is disposed.
         /// </summary>
-        public event EventHandler<EventArgs> Disposing;
+        public event EventHandler<EventArgs> Disposing = delegate { };
 
         /// <summary>
         /// Is true if the AudioEngine has been disposed.

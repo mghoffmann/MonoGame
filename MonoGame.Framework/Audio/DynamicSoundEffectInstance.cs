@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 
@@ -61,7 +63,7 @@ namespace Microsoft.Xna.Framework.Audio
         /// <remarks>
         /// This event may occur when <see cref="Play()"/> is called or during playback when a buffer is completed.
         /// </remarks>
-        public event EventHandler<EventArgs> BufferNeeded;
+        public event EventHandler<EventArgs> BufferNeeded = delegate { };
 
         #endregion
 

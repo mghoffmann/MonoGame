@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#nullable enable
+
 using System;
 
 namespace Microsoft.Xna.Framework.Audio
@@ -16,7 +18,7 @@ namespace Microsoft.Xna.Framework.Audio
         internal bool _isPooled = true;
         internal bool _isXAct;
         internal bool _isDynamic;
-        internal SoundEffect _effect;
+        internal SoundEffect? _effect;
         private float _pan;
         private float _volume;
         private float _pitch;

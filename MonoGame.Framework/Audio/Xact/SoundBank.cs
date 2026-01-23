@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#nullable enable
+
 using System;
 using System.IO;
 using System.Diagnostics;
@@ -316,7 +318,7 @@ namespace Microsoft.Xna.Framework.Audio
         /// <summary>
         /// This event is triggered when the SoundBank is disposed.
         /// </summary>
-        public event EventHandler<EventArgs> Disposing;
+        public event EventHandler<EventArgs> Disposing = delegate { };
 
         /// <summary>
         /// Is true if the SoundBank has been disposed.

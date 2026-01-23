@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -32,7 +34,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         internal Microphone()
         {
-
+            Name = null;
         }
 
         internal Microphone(string name)
@@ -47,7 +49,7 @@ namespace Microsoft.Xna.Framework.Audio
         /// <summary>
         /// Returns the friendly name of the microphone.
         /// </summary>
-        public readonly string Name;
+        public readonly string? Name;
 
         #endregion
 
@@ -112,7 +114,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         #region Static Members
 
-        private static List<Microphone> _allMicrophones = null;
+        private static List<Microphone>? _allMicrophones = null;
 
         /// <summary>
         /// Returns all compatible microphones.
@@ -121,22 +123,25 @@ namespace Microsoft.Xna.Framework.Audio
         {
             get
             {
-                SoundEffect.Initialize();                
-                if (_allMicrophones == null)
-                    _allMicrophones = new List<Microphone>();
+                SoundEffect.Initialize();
+                _allMicrophones ??= new List<Microphone>();
                 return new ReadOnlyCollection<Microphone>(_allMicrophones);
             }
         }
 
-        private static Microphone _default = null;
+        private static Microphone _default = new();
 
         /// <summary>
         /// Returns the default microphone.
         /// </summary>
         public static Microphone Default
         {
-            get { SoundEffect.Initialize(); return _default; }
-        }       
+            get
+            {
+                SoundEffect.Initialize();
+                return _default;
+            }
+        }
 
         #endregion
 
@@ -211,7 +216,7 @@ namespace Microsoft.Xna.Framework.Audio
         /// <summary>
         /// Event fired when the audio data are available.
         /// </summary>
-        public event EventHandler<EventArgs> BufferReady;
+        public event EventHandler<EventArgs> BufferReady = delegate { };
 
         #endregion
 

@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#nullable enable
+
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -82,7 +84,7 @@ namespace Microsoft.Xna.Framework.Audio
             return sum;
         }
 
-        internal XactSound GetOldestInstance()
+        internal XactSound? GetOldestInstance()
         {
             for (var i = 0; i < _sounds.Count; i++)
             {
