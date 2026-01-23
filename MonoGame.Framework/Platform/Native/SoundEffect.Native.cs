@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#nullable enable
+
 using System;
 using System.IO;
 using MonoGame.Interop;
@@ -38,9 +40,9 @@ public sealed partial class SoundEffect
             var riff = reader.ReadBytes(4);
             reader.ReadBytes(8);
 
-            byte[] waveData = null;
-            byte[] headerData = null;
-            byte[] dpdsData = null;
+            byte[]? waveData = null;
+            byte[]? headerData = null;
+            byte[]? dpdsData = null;
 
             // Read chunks.
             for (;;)
@@ -72,7 +74,7 @@ public sealed partial class SoundEffect
                 Buffer = MGA.Buffer_Create(System);
                 fixed (byte* h = headerData)
                 fixed (byte* w = waveData)
-                    MGA.Buffer_InitializeFormat(Buffer, h, w, waveData.Length, 0, 0);
+                    MGA.Buffer_InitializeFormat(Buffer, h, w, waveData!.Length, 0, 0);
 
                 var milliseconds = MGA.Buffer_GetDuration(Buffer);
                 duration = TimeSpan.FromMilliseconds(milliseconds);

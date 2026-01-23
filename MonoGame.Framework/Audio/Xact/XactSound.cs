@@ -11,8 +11,7 @@ namespace Microsoft.Xna.Framework.Audio
 {
     class XactSound
     {
-        private readonly bool _complexSound;
-        private readonly XactClip[] _soundClips;
+        private readonly XactClip[]? _soundClips;
         private readonly int _waveBankIndex;
         private readonly int _trackIndex;
         private readonly float _volume;
@@ -21,7 +20,7 @@ namespace Microsoft.Xna.Framework.Audio
         private readonly SoundBank _soundBank;
         private readonly bool _useReverb;
 
-        private SoundEffectInstance _wave;
+        private SoundEffectInstance? _wave;
         private bool _streaming;
 
         private float _cueVolume = 1;
@@ -31,10 +30,10 @@ namespace Microsoft.Xna.Framework.Audio
         private float? _cueFilterQFactor;
 
         internal readonly int[] RpcCurves;
-        
+
         public XactSound(SoundBank soundBank, int waveBankIndex, int trackIndex)
         {
-            _complexSound = false;
+            _soundClips = null; // This is not a complex sound
 
             _soundBank = soundBank;
             _waveBankIndex = waveBankIndex;
@@ -45,9 +44,9 @@ namespace Microsoft.Xna.Framework.Audio
         public XactSound(AudioEngine engine, SoundBank soundBank, BinaryReader soundReader)
         {
             _soundBank = soundBank;
-            
+
             var flags = soundReader.ReadByte();
-            _complexSound = (flags & 0x1) != 0;
+            bool complexSound = (flags & 0x1) != 0;
             var hasRPCs = (flags & 0x0E) != 0;
             var hasDSPs = (flags & 0x10) != 0;
 
@@ -58,7 +57,7 @@ namespace Microsoft.Xna.Framework.Audio
             soundReader.ReadUInt16(); // filter stuff?
             
             var numClips = 0;
-            if (_complexSound)
+            if (complexSound)
                 numClips = soundReader.ReadByte();
             else 
             {
@@ -96,7 +95,7 @@ namespace Microsoft.Xna.Framework.Audio
                 soundReader.BaseStream.Seek(7, SeekOrigin.Current);
             }
 
-            if (_complexSound)
+            if (complexSound)
             {
                 _soundClips = new XactClip[numClips];
                 for (int i = 0; i < numClips; i++)
@@ -113,7 +112,7 @@ namespace Microsoft.Xna.Framework.Audio
                 fadeOutTime == 0.0f )
                 return;
 
-            if (_complexSound)
+            if (_soundClips is not null)
             {
                 foreach (var sound in _soundClips)
                     sound.SetFade(fadeInTime, fadeOutTime);
@@ -146,7 +145,7 @@ namespace Microsoft.Xna.Framework.Audio
             float finalPitch = _pitch + _cuePitch;
             float finalMix = _useReverb ? _cueReverbMix : 0.0f;
 
-            if (_complexSound) 
+            if (_soundClips is not null)
             {
                 foreach (XactClip clip in _soundClips)
                 {
@@ -183,7 +182,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         internal void Update(float dt)
         {
-            if (_complexSound)
+            if (_soundClips is not null)
             {
                 foreach (var sound in _soundClips)
                     sound.Update(dt);
@@ -203,7 +202,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         internal void StopAll(AudioStopOptions options)
         {
-            if (_complexSound)
+            if (_soundClips is not null)
             {
                 foreach (XactClip clip in _soundClips)
                     clip.Stop();
@@ -224,7 +223,7 @@ namespace Microsoft.Xna.Framework.Audio
         
         public void Stop(AudioStopOptions options)
         {
-            if (_complexSound)
+            if (_soundClips is not null)
             {
                 foreach (var sound in _soundClips)
                     sound.Stop();
@@ -245,7 +244,7 @@ namespace Microsoft.Xna.Framework.Audio
         
         public void Pause()
         {
-            if (_complexSound)
+            if (_soundClips is not null)
             {
                 foreach (var sound in _soundClips)
                 {
@@ -262,7 +261,7 @@ namespace Microsoft.Xna.Framework.Audio
                 
         public void Resume()
         {
-            if (_complexSound)
+            if (_soundClips is not null)
             {
                 foreach (var sound in _soundClips)
                 {
@@ -282,7 +281,7 @@ namespace Microsoft.Xna.Framework.Audio
             // The different volumes modulate each other.
             var volume = _volume * _cueVolume * categoryVolume;
 
-            if (_complexSound)
+            if (_soundClips is not null)
             {
                 foreach (var clip in _soundClips)
                     clip.SetVolumeScale(volume);
@@ -306,7 +305,7 @@ namespace Microsoft.Xna.Framework.Audio
             _cuePitch = pitch;
             var finalPitch = _pitch + _cuePitch;
 
-            if (_complexSound)
+            if (_soundClips is not null)
             {
                 foreach (var clip in _soundClips)
                     clip.UpdateState(finalVolume, finalPitch, _useReverb ? _cueReverbMix : 0.0f, _cueFilterFrequency, _cueFilterQFactor);
@@ -321,7 +320,7 @@ namespace Microsoft.Xna.Framework.Audio
 
         internal void SetCuePan(float pan)
         {
-            if (_complexSound)
+            if (_soundClips is not null)
             {
                 foreach (var clip in _soundClips)
                     clip.SetPan(pan);
@@ -337,7 +336,7 @@ namespace Microsoft.Xna.Framework.Audio
         {
             get 
             {
-                if (_complexSound)
+                if (_soundClips is not null)
                 {
                     foreach (var clip in _soundClips)
                         if (clip.State == SoundState.Playing)
@@ -354,7 +353,7 @@ namespace Microsoft.Xna.Framework.Audio
         {
             get
             {
-                if (_complexSound)
+                if (_soundClips is not null)
                 {
                     var notStopped = false;
 
