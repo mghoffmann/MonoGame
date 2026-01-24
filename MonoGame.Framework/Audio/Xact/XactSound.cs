@@ -376,7 +376,7 @@ namespace Microsoft.Xna.Framework.Audio
         {
             get
             {
-                if (_complexSound) 
+                if (_soundClips is not null)
                 {
                     foreach (var clip in _soundClips)
                         if (clip.State == SoundState.Paused) 

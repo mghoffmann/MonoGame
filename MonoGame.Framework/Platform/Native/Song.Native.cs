@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+#nullable enable
+
 using System;
 using System.Threading;
 using Microsoft.Xna.Framework.Audio;
@@ -18,7 +20,7 @@ public sealed partial class Song : IEquatable<Song>, IDisposable
     private MGM_AudioDecoderInfo _info;
 
     private readonly ManualResetEvent _stop = new ManualResetEvent(false);
-    private Thread _thread;
+    private Thread? _thread;
 
     private float _volume = 1.0f;
 
@@ -201,19 +203,19 @@ public sealed partial class Song : IEquatable<Song>, IDisposable
 
     #region Media Library Features Not Supported
 
-    private Album PlatformGetAlbum()
+    private Album? PlatformGetAlbum()
     {
         // Not Supported.
         return null;
     }
 
-    private Artist PlatformGetArtist()
+    private Artist? PlatformGetArtist()
     {
         // Not Supported.
         return null;
     }
 
-    private Genre PlatformGetGenre()
+    private Genre? PlatformGetGenre()
     {
         // Not Supported.
         return null;
